@@ -54,7 +54,19 @@ void Chip8::vx_or_vy() {
     V[(opcode & 0x0F00) << 12] |= V[(opcode & 0x00F0) << 12];
     pc += 2;
 }
-void Chip8::
+void Chip8::vx_and_vy() {
+    V[(opcode & 0x0F00) << 12] &= V[(opcode & 0x00F0) << 12];
+    pc += 2;
+}
+void Chip8::vx_xor_vy() {
+    V[(opcode & 0x0F00) << 12] ^= V[(opcode & 0x00F0) << 12];
+    pc += 2;
+}
+void Chip8::vx_plus_vy() {
+    V[(opcode & 0x0F00) << 12] = V[(opcode & 0x0F00) << 12] + V[(opcode & 0x00F0) << 12];
+    pc += 2;
+
+}
 void(*functionpointers) = {  };
 
 int Chip8::initialize() {
