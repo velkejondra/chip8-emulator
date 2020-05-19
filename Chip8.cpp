@@ -1,5 +1,7 @@
 #include "Chip8.h"
 #include <stdio.h>
+#define X_REG (opcode & 0x0F00) << 12
+#define Y_REG (opcode & 0x00F0) << 12
 void Chip8::disp_clear() {
     for (int i = 0; i < 64 * 32; ++i) {
         pixels[i] = 0;
@@ -63,9 +65,26 @@ void Chip8::vx_xor_vy() {
     pc += 2;
 }
 void Chip8::vx_plus_vy() {
-    V[(opcode & 0x0F00) << 12] = V[(opcode & 0x0F00) << 12] + V[(opcode & 0x00F0) << 12];
+    int result = V[(opcode & 0x0F00) << 12] + V[(opcode & 0x00F0) << 12];
+    if (result > 0xFF){
+        V[0xF] = 1;
+    }
+    V[(opcode & 0x0F00) << 12] = (unsigned short) result;
     pc += 2;
-
+}
+void Chip8::vx_minus_vy(){
+    int result = V[(opcode & 0x0F00) << 12] - V[(opcode & 0x00F0) << 12];
+    if(V[(opcode & 0x0F00) << 12] > V[(opcode & 0x00F0) << 12]){
+        V[0xF] = 1;
+    }
+    else{
+        V[0xF] = 0;
+    }
+    V[(opcode & 0x0F00) << 12] = (unsigned char)result;
+    pc +=2;
+}
+void Chip8::shift_vx_left(){
+    V[(opcode & 0x0F00) << 12]
 }
 void(*functionpointers) = {  };
 
@@ -81,7 +100,9 @@ int Chip8::initialize() {
 }
 int Chip8::emulateCycle() {
     opcode = memory[pc] << 8 | memory[pc + 1];
-        
-
     return 1;
+}
+
+int Chip8::setKey(){
+    return 0;
 }
