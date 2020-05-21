@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-#define X_REG (opcode & 0x0F00) << 12
-#define Y_REG (opcode & 0x00F0) << 12
+#define X_REG (opcode & 0x0F00) >> 8
+#define Y_REG (opcode & 0x00F0) >> 4
 
 void Chip8::disp_clear() {
   for (int i = 0; i < 64 * 32; ++i) {
@@ -85,8 +85,43 @@ void Chip8::vx_minus_vy() {
   V[X_REG] = (unsigned char) result;
   pc += 2;
 }
-void Chip8::shift_vx_left() {
-  V[X_REG]
+void Chip8::shift_vx_right() {
+  bool bit = V[X_REG] & 1;
+  V[X_REG] = V[X_REG]>>1;
+  V[0xF] = bit;
+  pc += 2;
+
+}
+void Chip8::vy_minus_vx(){
+  bool bit = V[X_REG] >>7;
+  V[X_REG] = V[X_REG]<<1;
+  V[0xF] = bit;
+  pc += 2;
+}
+void Chip8::shift_vx_left(){
+  bool bit = V[X_REG] >>7;
+  V[X_REG] = V[X_REG]<<1;
+  V[0xF] = bit;
+  pc += 2;
+}
+void Chip8::skip_if_vx_not_vy(){
+  if(V[X_REG] != V[Y_REG]){
+    pc += 2;
+  }
+  pc += 2;
+}
+void Chip8::set_I(){
+  I = opcode & 0x0FFF;
+}
+void Chip8::jump_to_nnnvo(){
+  pc = opcode & 0x0FFF + V[0];
+}
+void Chip8::random(){
+  V[X_REG] = (rand() % 256) & (opcode & 0x00FF);
+  pc += 2;
+}
+void Chip8::drawos(){
+  
 }
 void( * functionpointers) = {};
 
