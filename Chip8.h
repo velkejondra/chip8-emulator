@@ -23,14 +23,13 @@ private:
 	unsigned char V[16];//cpu registers
 	unsigned short I;//index register
 	unsigned short pc;//program counter
-	unsigned char pixels[64 * 32];//pixel statesa
+	unsigned char pixels[32][64];//pixel states
 	unsigned char delay_timer;
 	unsigned char sound_timer;
 	unsigned short stack[16];
 	unsigned short sp; //stack pointer
 	void (Chip8::* FunctionPointers[17])();
-	unsigned char key[16]; //keyboard
-	int chip8_fontset[80];
+	unsigned char keys[16]; //keyboard
 	void (*foo)();
 	void call_rca();
 	void disp_clear();
