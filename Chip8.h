@@ -17,6 +17,7 @@ public:
 	void emulateCycle();
 	bool drawFlag;
 	void setKey();
+	void decodeOpcode();
 private:
 	unsigned short opcode; // current opcode
 	unsigned char memory[4096];
