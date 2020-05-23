@@ -12,11 +12,11 @@ struct ChooseOpcode
 class Chip8
 {
 public:
-	int initialize();
-	int loadGame(string Game);
-	int emulateCycle();
+	void initialize();
+	void loadGame(string Game);
+	void emulateCycle();
 	bool drawFlag;
-	int setKey();
+	void setKey();
 private:
 	unsigned short opcode; // current opcode
 	unsigned char memory[4096];
@@ -29,6 +29,7 @@ private:
 	unsigned short stack[16];
 	unsigned short sp; //stack pointer
 	void (Chip8::* FunctionPointers[17])();
+	void (Chip8::* FunctionArith[16])();
 	unsigned char keys[16]; //keyboard
 	void (*foo)();
 	void call_rca();

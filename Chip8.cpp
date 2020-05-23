@@ -224,24 +224,41 @@ void Chip8::reg_load(){
   }
   pc += 2;
 }
+void(*functionpointers) = {
 
-void( * functionpointers) = {};
+};
 
-int Chip8::initialize() {
+
+void Chip8::initialize() {
   pc = 0x200; // Program counter starts at 0x200
   opcode = 0; // Reset current opcode	
   I = 0; // Reset index register
   sp = 0; // Reset stack pointer
-  for (int i = 0; i < 80; ++i) // load fontset
+  //clear stack and registers
+  for(int i = 0; i < 16; ++i){
+    stack[i] = 0;
+    V[i] = 0;
+    keys[i] = 0;
+  }
+  for(int i = 0; i < 4096; ++i){
+    memory[i] = 0;
+  }
+  //clear pixels
+  for(int y = 0; y < 32; ++y){
+    for(int x = 0; x < 64; ++x){
+      pixels[y][x] = 0;
+    }
+  }
+  drawFlag = true;
+  delay_timer = 0;
+  sound_timer = 0;
+  for (int i = 0; i < 80; ++i){// load fontset
     memory[i] = chip8_fontset[i];
-
-  return 0;
+  }
 }
-int Chip8::emulateCycle() {
+void Chip8::emulateCycle() {
   opcode = memory[pc] << 8 | memory[pc + 1];
-  return 1;
+  (*functionpointers[(opcode & 0xF000) >> 12])(); 
 }
-
-int Chip8::setKey() {
-  return 0;
-}
+void Chip8::setKey() {
+} 
