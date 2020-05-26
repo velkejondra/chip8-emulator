@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 using namespace std;
-
+Class Opcodos{
+	
+}
 class Chip8
 {
 public:
@@ -25,6 +27,8 @@ public:
 	unsigned short sp; //stack pointer
 	unsigned char keys[16]; //keyboard
 };
+	void (*ArithmeticTable[17])();
+	void (*Chip8Arithmetic[16])();
 	void call_rca(Chip8 *chipos);
 	void disp_clear(Chip8 *chipos);
 	void do_return(Chip8 *chipos);

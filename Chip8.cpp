@@ -1,9 +1,10 @@
 #include "Chip8.h"
 
 #include <stdio.h>
-
+using namespace std;
 #define X_REG (chipos->opcode & 0x0F00) >> 8
 #define Y_REG (chipos->opcode & 0x00F0) >> 4
+#define MP make_pair
 typedef void (Chip8::*method_function)();
 
 unsigned char chip8_fontset[80] =
@@ -225,13 +226,53 @@ void reg_load(Chip8 *chipos){
   }
   chipos->pc += 2;
 }
+void Chip8Arithmetic(){
 
+}
+void (*ArithmeticTable[16]) = {
 
-
-method_function myptr= {
-  
 };
-
+void (*Chip8Table[17]) ={
+  Chip8Arithmetic,Chip8Arithmetic,go_to,call_sub,do_if,do_negate_if,do_equal_if,
+  set_vx,add_vx_to_nn,Chip8Arithmetic,Chip8Arithmetic,Chip8Arithmetic,Chip8Arithmetic,
+  Chip8Arithmetic,Chip8Arithmetic,Chip8Arithmetic,Chip8Arithmetic,skip_if_vx_not_vy,
+  set_I,jump_to_nnnvo,randomos,drawos,skip_keyos
+}; 
+vector<pair<string,void (*)()> func_arr ={
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+  MP("00",),
+}
 
 void Chip8::initialize() {
   pc = 0x200; // Program counter starts at 0x200
