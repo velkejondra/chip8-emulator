@@ -5,6 +5,12 @@
 #define X_REG (opcode & 0x0F00) >> 8
 #define Y_REG (opcode & 0x00F0) >> 4
 
+typedef void(Chip8::*MethPointer)();
+struct OpcodeMethod{
+  const char *MyOpcode;
+  MethPointer MyMeth;
+};
+
 unsigned char chip8_fontset[80] =
 { 
     0xF0, 0x90, 0x90, 0x90, 0xF0, //0
@@ -224,8 +230,41 @@ void Chip8::reg_load(){
   }
   pc += 2;
 }
-void(*functionpointers) = {
-
+OpcodeMethod AllOpcodes[] ={
+  {"00",Chip8::disp_clear},
+  {"0E",Chip8::do_return},
+  {"1",Chip8::go_to},
+  {"2",Chip8::call_sub},
+  {"3",Chip8::do_if},
+  {"4",Chip8::do_negate_if},
+  {"5",Chip8::do_equal_if},
+  {"6",Chip8::set_vx},
+  {"7",Chip8::add_vx_to_nn},
+  {"80",Chip8::set_vx_to_vy},
+  {"81",Chip8::vx_or_vy},
+  {"82",Chip8::vx_and_vy},
+  {"83",Chip8::vx_xor_vy},
+  {"84",Chip8::vx_plus_vy},
+  {"85",Chip8::vx_minus_vy},
+  {"86",Chip8::shift_vx_right},
+  {"87",Chip8::vy_minus_vx},
+  {"8E",Chip8::shift_vx_left},
+  {"9",Chip8::skip_if_vx_not_vy},
+  {"A",Chip8::set_I},
+  {"B",Chip8::jump_to_nnnvo},
+  {"C",Chip8::random},
+  {"D",Chip8::drawos},
+  {"EE",Chip8::skip_keyos},
+  {"E1",Chip8::skip_not_key},
+  {"F7",Chip8::get_delayos},
+  {"FA",Chip8::get_keyos},
+  {"F5",Chip8::delayos_timer},
+  {"F8",Chip8::soundos_timer},
+  {"FE",Chip8::add_vx},
+  {"F9",Chip8::sprite_adress},
+  {"F3",Chip8::set_bcd},
+  {"F55",Chip8::reg_dump},
+  {"F65",Chip8::reg_load},
 };
 
 
@@ -258,7 +297,6 @@ void Chip8::initialize() {
 }
 void Chip8::emulateCycle() {
   opcode = memory[pc] << 8 | memory[pc + 1];
-  (*functionpointers[(opcode & 0xF000) >> 12])(); 
 }
 void Chip8::setKey() {
 } 

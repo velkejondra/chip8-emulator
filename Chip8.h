@@ -18,7 +18,7 @@ public:
 	bool drawFlag;
 	void setKey();
 	void decodeOpcode();
-private:
+public:
 	unsigned short opcode; // current opcode
 	unsigned char memory[4096];
 	unsigned char V[16];//cpu registers
@@ -32,6 +32,7 @@ private:
 	void (Chip8::* FunctionPointers[17])();
 	void (Chip8::* FunctionArith[16])();
 	unsigned char keys[16]; //keyboard
+public:
 	void (*foo)();
 	void call_rca();
 	void disp_clear();
