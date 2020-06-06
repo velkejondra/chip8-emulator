@@ -1,6 +1,7 @@
 #include "Chip8.h"
 
 #include <stdio.h>
+#include <math.h>
 
 #define X_REG (opcode & 0x0F00) >> 8
 #define Y_REG (opcode & 0x00F0) >> 4
