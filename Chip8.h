@@ -2,13 +2,7 @@
 #include <string>
 #include <vector>
 using namespace std;
-struct ChooseOpcode
-{
-	int opcode;
-	void(*handdle_fun);
-	ChooseOpcode() : opcode(0), handdle_fun(NULL) { }
-	ChooseOpcode(int code, void(*func)) : opcode(0), handdle_fun(func) { }
-};
+
 class Chip8
 {
 public:
