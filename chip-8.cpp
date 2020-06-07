@@ -48,27 +48,35 @@ public:
 	}
 	void DrawSprite()
 	{
-		for(int y = 0; y < 32; ++y){
-			for(int x = 0; y < 64; ++x){
-				if(chip.pixels[y][x] == 1){
-					Draw(x,  y, olc::WHITE);
+		for (int y = 0; y < 32; ++y)
+		{
+			for (int x = 0; y < 64; ++x)
+			{
+				if (chip.pixels[y][x] == 1)
+				{
+					Draw(x, y, olc::WHITE);
 				}
-				else{
-					Draw(x,  y, olc::DARK_BLUE);
+				else
+				{
+					Draw(x, y, olc::DARK_BLUE);
 				}
 			}
 		}
 	}
-	void setKeys(Chip8 &chip){
-	for(auto i : olc_to_chip8key){
-		if(GetKey(i.first).bPressed){
-			chip.keys[i.second] = 1;
-		}
-		else{
-			chip.keys[i.second] = 0;
+	void setKeys(Chip8 &chip)
+	{
+		for (auto i : olc_to_chip8key)
+		{
+			if (GetKey(i.first).bPressed)
+			{
+				chip.keys[i.second] = 1;
+			}
+			else
+			{
+				chip.keys[i.second] = 0;
+			}
 		}
 	}
-}
 };
 
 int main()
