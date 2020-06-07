@@ -336,5 +336,7 @@ void Chip8::initialize() {
 void Chip8::emulateCycle() { 
   opcode = memory[pc] << 8 | memory[pc + 1]; 
   int index = DecodeOpcode(opcode,0,AllOpcodes.size());
+  OpcodeMethod myMethod = AllOpcodes[index];
+  (this->*myMethod.MyMeth)();
   }
 void Chip8::setKey() {}
