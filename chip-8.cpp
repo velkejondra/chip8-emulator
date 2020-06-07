@@ -5,7 +5,7 @@
 #define mp make_pair
 using namespace std;
 Chip8 chip;
-vector<int, int> olc_to_chip8key = {
+vector<pair<olc::Key, int>> olc_to_chip8key = {
 	mp(olc::Key::Q, 0x1),
 	mp(olc::Key::W, 0x2),
 	mp(olc::Key::E, 0x3),
@@ -22,9 +22,7 @@ vector<int, int> olc_to_chip8key = {
 	mp(olc::Key::K2, 0x0),
 	mp(olc::Key::K3, 0xB),
 	mp(olc::Key::K4, 0xF)};
-void setKeys(Chip8 &chip){
 
-}
 class MainWindow : public olc::PixelGameEngine
 {
 public:
@@ -45,12 +43,22 @@ public:
 		{
 			//draw graphics
 		}
-		setKeys();
+		setKeys(chip);
 		return true;
 	}
 	void DrawSprite()
 	{
 	}
+	void setKeys(Chip8 &chip){
+	for(auto i : olc_to_chip8key){
+		if(GetKey(i.first).bPressed){
+			chip.keys[i.second] = 1;
+		}
+		else{
+			chip.keys[i.second] = 0;
+		}
+	}
+}
 };
 
 int main()
