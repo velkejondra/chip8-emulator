@@ -32,16 +32,23 @@ public:
 	}
 	bool OnUserCreate() override
 	{
+		chip.initialize();
+		chip.loadGame("invaders.c8");
 		Clear(olc::DARK_BLUE);
 		return true;
 	}
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
+		
+		std::chrono::milliseconds timespan(100); // or whatever
+		std::this_thread::sleep_for(timespan);
 		chip.emulateCycle();
+		cout << "jes" << endl;
 		if (chip.drawFlag)
 		{
 			//draw graphics
+			DrawSprite();
 		}
 		setKeys(chip);
 		return true;
@@ -50,7 +57,7 @@ public:
 	{
 		for (int y = 0; y < 32; ++y)
 		{
-			for (int x = 0; y < 64; ++x)
+			for (int x = 0; x < 64; ++x)
 			{
 				if (chip.pixels[y][x] == 1)
 				{
@@ -62,6 +69,8 @@ public:
 				}
 			}
 		}
+		chip.drawFlag = false;
+		
 	}
 	void setKeys(Chip8 &chip)
 	{
@@ -82,7 +91,7 @@ public:
 int main()
 {
 	MainWindow demo;
-	if (demo.Construct(320, 200, 2, 2))
+	if (demo.Construct(64, 32, 16, 16))
 		demo.Start();
 	return 0;
 }

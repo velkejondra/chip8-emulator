@@ -7,7 +7,7 @@ class Chip8
 {
 public:
 	void initialize();
-	void loadGame(string Game);
+	bool loadGame(const char* filename);
 	void emulateCycle();
 	bool drawFlag;
 	void setKey();
