@@ -11,7 +11,7 @@ using namespace std;
 typedef void (Chip8::*MethPointer)();
 struct OpcodeMethod
 {
-  unsigned short MyOpcode;
+  const char* MyOpcode;
   MethPointer MyMeth;
 };
 
@@ -292,49 +292,49 @@ int hex2int(char ch)
     return -1;
 }
 vector<OpcodeMethod> AllOpcodes = {
-    {0x00, &Chip8::disp_clear},
-    {0x0E, &Chip8::do_return},
-    {0x1, &Chip8::go_to},
-    {0x2, &Chip8::call_sub},
-    {0x3, &Chip8::do_if},
-    {0x4, &Chip8::do_negate_if},
-    {0x5, &Chip8::do_equal_if},
-    {0x6, &Chip8::set_vx},
-    {0x7, &Chip8::add_vx_to_nn},
-    {0x80, &Chip8::set_vx_to_vy},
-    {0x81, &Chip8::vx_or_vy},
-    {0x82, &Chip8::vx_and_vy},
-    {0x83, &Chip8::vx_xor_vy},
-    {0x84, &Chip8::vx_plus_vy},
-    {0x85, &Chip8::vx_minus_vy},
-    {0x86, &Chip8::shift_vx_right},
-    {0x87, &Chip8::vy_minus_vx},
-    {0x8E, &Chip8::shift_vx_left},
-    {0x9, &Chip8::skip_if_vx_not_vy},
-    {0xA, &Chip8::set_I},
-    {0xB, &Chip8::jump_to_nnnvo},
-    {0xC, &Chip8::random},
-    {0xD, &Chip8::drawos},
-    {0xE1, &Chip8::skip_not_key},
-    {0xEE, &Chip8::skip_keyos},
-    {0xF15, &Chip8::delayos_timer},
-    {0xF3, &Chip8::set_bcd},
-    {0xF55, &Chip8::reg_dump},
-    {0xF56, &Chip8::reg_load},
-    {0xF7, &Chip8::get_delayos},
-    {0xF8, &Chip8::soundos_timer},
-    {0xF9, &Chip8::sprite_adress},
-    {0xFA, &Chip8::get_keyos},
-    {0xFE, &Chip8::add_vx},
+    {"00", &Chip8::disp_clear},
+    {"0E", &Chip8::do_return},
+    {"1", &Chip8::go_to},
+    {"2", &Chip8::call_sub},
+    {"3", &Chip8::do_if},
+    {"4", &Chip8::do_negate_if},
+    {"5", &Chip8::do_equal_if},
+    {"6", &Chip8::set_vx},
+    {"7", &Chip8::add_vx_to_nn},
+    {"80", &Chip8::set_vx_to_vy},
+    {"81", &Chip8::vx_or_vy},
+    {"82", &Chip8::vx_and_vy},
+    {"83", &Chip8::vx_xor_vy},
+    {"84", &Chip8::vx_plus_vy},
+    {"85", &Chip8::vx_minus_vy},
+    {"86", &Chip8::shift_vx_right},
+    {"87", &Chip8::vy_minus_vx},
+    {"8E", &Chip8::shift_vx_left},
+    {"9", &Chip8::skip_if_vx_not_vy},
+    {"A", &Chip8::set_I},
+    {"B", &Chip8::jump_to_nnnvo},
+    {"C", &Chip8::random},
+    {"D", &Chip8::drawos},
+    {"E1", &Chip8::skip_not_key},
+    {"EE", &Chip8::skip_keyos},
+    {"F15", &Chip8::delayos_timer},
+    {"F3", &Chip8::set_bcd},
+    {"F55", &Chip8::reg_dump},
+    {"F56", &Chip8::reg_load},
+    {"F7", &Chip8::get_delayos},
+    {"F8", &Chip8::soundos_timer},
+    {"F9", &Chip8::sprite_adress},
+    {"FA", &Chip8::get_keyos},
+    {"FE", &Chip8::add_vx},
 };
 int poradi[] = {3, 0, 1, 2};
 bool operator>(const OpcodeMethod left, unsigned short right)
 {
   int *myptr = poradi;
-  for (int i = log(left.MyOpcode) / log(16); i >= 0; --i)
+  for (int i = 0; i > strlen(left.MyOpcode); ++i)
   {
     int rightbyte = (right >> (0x4 * *myptr)) & 0xF;
-    int leftbyte = (left.MyOpcode >> (0x4 * i)) & 0xF;
+    int leftbyte = hex2int(left.MyOpcode[*myptr]); 
     myptr++;
     if (leftbyte == rightbyte)
       continue;
@@ -348,10 +348,10 @@ bool operator>(const OpcodeMethod left, unsigned short right)
 bool operator==(const OpcodeMethod left, unsigned short right)
 {
   int *myptr = poradi;
-  for (int i = log(left.MyOpcode) / log(16); i >= 0; --i)
+  for (int i = 0; i > strlen(left.MyOpcode); ++i)
   {
     int rightbyte = (right >> (0x4 * *myptr)) & 0xF;
-    int leftbyte = (left.MyOpcode >> (0x4 * i)) & 0xF;
+    int leftbyte = hex2int(left.MyOpcode[*myptr]); 
     myptr++;
     if (leftbyte == rightbyte)
       continue;
