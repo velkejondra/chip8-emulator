@@ -23,9 +23,7 @@ public:
 	unsigned char sound_timer;
 	unsigned short stack[16];
 	unsigned short sp; //stack pointer
-	void (Chip8::* FunctionPointers[17])();
-	void (Chip8::* FunctionArith[16])();
-	unsigned char keys[16]; //keyboard
+	std::vector<int> keys; //keyboard
 public:
 	void (*foo)();
 	void call_rca();
